@@ -45,7 +45,6 @@ steps:
           --platform managed \
           --allow-unauthenticated \
           --set-env-vars "NG_APP_API_URL=$$API_URL,NG_APP_GCP_KEY=$$GCP_KEY,NG_APP_VERSION=$$VERSION,GOOGLE_CLOUD_PROJECT=$PROJECT_ID"
-    ]
 
 # Configuración de substituciones
 substitutions:

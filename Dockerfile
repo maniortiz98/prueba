@@ -26,14 +26,14 @@ FROM nginx:1.26-alpine
 RUN addgroup -g 1001 -S appgroup && \
     adduser -S appuser -u 1001 -G appgroup
 
-# Instalar bash para scripts (si es necesario)
-RUN apk add --no-cache bash
+# Instalar herramientas necesarias
+RUN apk add --no-cache bash gettext
 
 # Copiar archivos de la aplicación
 COPY --from=build /app/dist/mani/browser /usr/share/nginx/html
 
-# Copiar configuración de Nginx
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# Copiar template de configuración de Nginx
+COPY nginx.conf.template /etc/nginx/conf.d/nginx.conf.template
 
 # Script para inyectar variables de entorno en runtime
 COPY docker-entrypoint.sh /docker-entrypoint.sh
@@ -50,8 +50,8 @@ RUN chown -R appuser:appgroup /usr/share/nginx/html && \
 # Cambiar a usuario no-root
 USER appuser
 
-# Exponer puerto
-EXPOSE 80
+# Cloud Run usa PORT dinámicamente
+EXPOSE $PORT
 
 # Usar entrypoint personalizado
 ENTRYPOINT ["/docker-entrypoint.sh"]
