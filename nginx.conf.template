@@ -1,5 +1,5 @@
 server {
-  listen 80;
+  listen ${PORT};
   server_name localhost;
 
   root /usr/share/nginx/html;
@@ -13,5 +13,12 @@ server {
     expires 6M;
     access_log off;
     add_header Cache-Control "public";
+  }
+
+  # Health check endpoint
+  location /health {
+    access_log off;
+    return 200 "healthy\n";
+    add_header Content-Type text/plain;
   }
 }
