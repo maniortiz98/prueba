@@ -6,6 +6,14 @@
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+  <!-- Variables de entorno inyectadas desde .env -->
+  <script>
+    window.env = {
+      "GCP_KEY": "valor-produccion",
+      "API_URL": "https://miapi-en-produccion.com/api"
+    };
+  </script>
 </head>
 <body>
   <app-root></app-root>
