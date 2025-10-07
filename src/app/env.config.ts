@@ -3,5 +3,6 @@
 
 export const env = {
   API_URL: 'https://miapi-en-produccion.com/api',
-  GCP_KEY: 'valor-produccion'
+  GCP_KEY: 'valor-produccion',
+  VERSION: '1.0.0'
 };

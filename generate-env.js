@@ -26,8 +26,9 @@ const configContent = `// Configuración de variables de entorno desde .env
 // Este archivo se genera automáticamente desde generate-env.js
 
 export const env = {
-  API_URL: '${envVars.API_URL || 'http://localhost:3000/api'}',
-  GCP_KEY: '${envVars.GCP_KEY || 'default-key'}'
+  API_URL: '${envVars.NG_APP_API_URL || 'http://localhost:3000/api'}',
+  GCP_KEY: '${envVars.NG_APP_GCP_KEY || 'default-key'}',
+  VERSION: '${envVars.NG_APP_VERSION || '1.0.0'}'
 };
 `;
 
@@ -36,5 +37,6 @@ const configPath = path.join(__dirname, 'src/app/env.config.ts');
 fs.writeFileSync(configPath, configContent);
 
 console.log('✅ Variables de entorno cargadas desde .env:');
-console.log('   API_URL:', envVars.API_URL);
-console.log('   GCP_KEY:', envVars.GCP_KEY);
+console.log('   NG_APP_API_URL:', envVars.NG_APP_API_URL);
+console.log('   NG_APP_GCP_KEY:', envVars.NG_APP_GCP_KEY);
+console.log('   NG_APP_VERSION:', envVars.NG_APP_VERSION);
