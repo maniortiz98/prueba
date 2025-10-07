@@ -4,7 +4,19 @@ steps:
   - name: 'gcr.io/cloud-builders/gcloud'
     args: ['auth', 'configure-docker']
 
-  # Paso 2: Construir la imagen
+  # Paso 2: Obtener secretos de Secret Manager
+  - name: 'gcr.io/cloud-builders/gcloud'
+    id: 'get-secrets'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        echo "Obteniendo secretos de Secret Manager..."
+        gcloud secrets versions access latest --secret="api-url" > /workspace/api_url.txt
+        gcloud secrets versions access latest --secret="gcp-key" > /workspace/gcp_key.txt
+        gcloud secrets versions access latest --secret="app-version" > /workspace/app_version.txt
+
+  # Paso 3: Construir la imagen
   - name: 'gcr.io/cloud-builders/docker'
     args: [
       'build',
@@ -12,22 +24,27 @@ steps:
       '-t', 'gcr.io/$PROJECT_ID/mani-app:latest',
       '.'
     ]
-    env:
-      - 'GOOGLE_CLOUD_PROJECT=$PROJECT_ID'
 
-  # Paso 3: Subir la imagen al Container Registry
+  # Paso 4: Subir la imagen al Container Registry
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'gcr.io/$PROJECT_ID/mani-app:latest']
 
-  # Paso 4: Desplegar a Cloud Run
+  # Paso 5: Desplegar a Cloud Run con variables de entorno desde secretos
   - name: 'gcr.io/cloud-builders/gcloud'
-    args: [
-      'run', 'deploy', 'mani-app',
-      '--image', 'gcr.io/$PROJECT_ID/mani-app:latest',
-      '--region', 'us-central1',
-      '--platform', 'managed',
-      '--allow-unauthenticated',
-      '--set-env-vars', 'GOOGLE_CLOUD_PROJECT=$PROJECT_ID'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        API_URL=$(cat /workspace/api_url.txt)
+        GCP_KEY=$(cat /workspace/gcp_key.txt)
+        VERSION=$(cat /workspace/app_version.txt)
+
+        gcloud run deploy mani-app \
+          --image gcr.io/$PROJECT_ID/mani-app:latest \
+          --region us-central1 \
+          --platform managed \
+          --allow-unauthenticated \
+          --set-env-vars "NG_APP_API_URL=$$API_URL,NG_APP_GCP_KEY=$$GCP_KEY,NG_APP_VERSION=$$VERSION,GOOGLE_CLOUD_PROJECT=$PROJECT_ID"
     ]
 
 # Configuración de substituciones
