@@ -19,13 +19,16 @@ echo "   Servicio: $SERVICE_NAME"
 # Configurar proyecto
 gcloud config set project $PROJECT_ID
 
-# Obtener secretos de Secret Manager
-echo "🔐 Obteniendo secretos..."
-API_URL=$(gcloud secrets versions access latest --secret="api-url" 2>/dev/null || echo "https://default-api.com/api")
-GCP_KEY=$(gcloud secrets versions access latest --secret="gcp-key" 2>/dev/null || echo "default-key")
-VERSION=$(gcloud secrets versions access latest --secret="app-version" 2>/dev/null || echo "1.0.0")
+# Usar los valores que tienes configurados en la UI de Cloud Run
+echo "� Usando variables de entorno configuradas..."
+API_URL="valor-produccion-gcp"
+GCP_KEY="super-secreto-123-gcp"
+VERSION="1.0.0"
 
-echo "✅ Secretos obtenidos"
+echo "✅ Variables configuradas:"
+echo "   API_URL: $API_URL"
+echo "   GCP_KEY: [HIDDEN]"
+echo "   VERSION: $VERSION"
 
 # Desplegar a Cloud Run con configuración de puerto automática
 echo "🌐 Desplegando servicio..."
