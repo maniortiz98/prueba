@@ -33,7 +33,7 @@ gcloud run deploy $SERVICE_NAME \
   --source . \
   --region $REGION \
   --allow-unauthenticated \
-  --port 8080 \
+  --port 80 \
   --set-env-vars "NG_APP_API_URL=$API_URL,NG_APP_GCP_KEY=$GCP_KEY,NG_APP_VERSION=$VERSION" \
   --memory 512Mi \
   --cpu 1 \

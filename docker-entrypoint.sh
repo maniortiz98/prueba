@@ -4,7 +4,7 @@ set -e
 echo "🚀 Iniciando aplicación Angular..."
 
 # Configurar puerto desde variable de entorno (Cloud Run usa PORT)
-export PORT=${PORT:-8080}
+export PORT=${PORT:-80}
 echo "🔧 Configurando puerto: $PORT"
 
 # Generar configuración de Nginx con el puerto correcto
