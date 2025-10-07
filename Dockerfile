@@ -20,10 +20,8 @@ EXPOSE 80
 
 # Generar env.js dinámicamente a partir de variables de entorno de Cloud Run
 # y luego iniciar Nginx
+# Generar env.js y reemplazar variables en nginx.conf
 CMD sh -c "\
-echo \"window['env'] = { \
-  production: true, \
-  apiUrl: '${API_URL}', \
-  API_KEY: '${API_KEY}' \
-};\" > /usr/share/nginx/html/assets/env.js && \
-exec nginx -g 'daemon off;'"
+envsubst '\$PORT \$API_KEY \$API_URL' < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf && \
+echo \"window['env'] = { production: true, apiUrl: '${API_URL}', API_KEY: '${API_KEY}' };\" > /usr/share/nginx/html/assets/env.js && \
+nginx -g 'daemon off;'"
