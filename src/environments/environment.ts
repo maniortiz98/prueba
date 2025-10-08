@@ -1,5 +1,5 @@
 export const environment = {
   production: false,
   apiUrl: 'http://localhost:3000/api',
-  gcpKey: 'valor-local'
+  GCP_KEY: 'valor-local'
 };

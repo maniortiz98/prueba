@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { env } from './env.config';
+import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -12,7 +12,6 @@ export class App {
   protected title = 'mani';
 
   constructor() {
-    console.log('API URL:', env.API_URL);
-    console.log('GCP Key:', env.GCP_KEY);
+    console.log('GCP Key:', environment.GCP_KEY);
   }
 }
