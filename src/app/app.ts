@@ -9,9 +9,12 @@ import { environment } from '../environments/environment';
   styleUrl: './app.scss'
 })
 export class App {
-  protected title = 'mani';
+protected title = 'mani';
+  protected gcpKey: string;
 
   constructor() {
-    console.log('GCP Key:', environment.GCP_KEY);
+    // Acceder a la variable de .env
+    this.gcpKey = process.env['GCP_KEY'] || 'NO_KEY_FOUND';
+    console.log('GCP Key:', this.gcpKey);
   }
 }
